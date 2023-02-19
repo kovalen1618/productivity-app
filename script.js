@@ -35,19 +35,49 @@ async function displayTasks() {
     for (const task of tasks) {
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
-
+        // Title
         const titleElement = document.createElement('h3');
         titleElement.classList.add('title');
         titleElement.textContent = task.title;
         taskElement.appendChild(titleElement);
-
+        // Timer
         const countdownElement = document.createElement('p');
         countdownElement.classList.add('countdown');
         taskElement.appendChild(countdownElement);
+        // Options
+        const optionsElement = document.createElement('div');
+        optionsElement.classList.add('options');
+        taskElement.appendChild(optionsElement);
+        // Delete
+        const deleteTaskButton = document.createElement('button');
+        deleteTaskButton.classList.add('delete');
+        deleteTaskButton.textContent = 'DELETE';
+        optionsElement.appendChild(deleteTaskButton);
 
         createCountdown(countdownElement, task.time);
 
         taskContainer.appendChild(taskElement);
+
+        // DELETE Data
+        deleteTaskButton.addEventListener('click', () => {
+            deleteTask(task.id);
+        })
+    }
+}
+
+// Function for successfully sending DELETE request
+async function deleteTask(id) {
+    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+    })
+
+    if (response.ok) {
+        // If the request was successful, remove the task from the DOM
+        const taskElement = document.querySelector(`.task[data-id="${id}"]`);
+        taskElement.remove();
+    } else {
+        console.error('Error deleting task');
     }
 }
 
@@ -64,9 +94,10 @@ fetch('./data/db.json')
 const addTaskButton = document.querySelector('.add-task');
 
 addTaskButton.addEventListener('click', (e) => {
+    // Stop the page from reloading when the button is clicked so that the task is dynamically added
     e.preventDefault();
 
-    // Ask user for input
+    // TODO: Ask user for input
 
     // Define the data for the new task
     const data = {
@@ -84,5 +115,3 @@ addTaskButton.addEventListener('click', (e) => {
         .then(data => console.log(data))
         .catch(error => console.error(error));
 })
-
-// DELETE Data
