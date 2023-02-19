@@ -1,19 +1,19 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "title": "Work on website",
-      "time": 70
+      "title": "New task",
+      "time": 120,
+      "id": 1
     },
     {
       "title": "New task",
       "time": 120,
-      "id": 2
+      "id": 6
     },
     {
       "title": "New task",
       "time": 120,
-      "id": 5
+      "id": 7
     }
   ]
 }

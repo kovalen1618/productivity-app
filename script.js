@@ -35,15 +35,21 @@ async function displayTasks() {
     for (const task of tasks) {
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
+        taskElement.setAttribute('data-id', task.id);
+
         // Title
         const titleElement = document.createElement('h3');
         titleElement.classList.add('title');
         titleElement.textContent = task.title;
         taskElement.appendChild(titleElement);
+
         // Timer
         const countdownElement = document.createElement('p');
         countdownElement.classList.add('countdown');
         taskElement.appendChild(countdownElement);
+
+        createCountdown(countdownElement, task.time);
+
         // Options
         const optionsElement = document.createElement('div');
         optionsElement.classList.add('options');
@@ -53,15 +59,15 @@ async function displayTasks() {
         deleteTaskButton.classList.add('delete');
         deleteTaskButton.textContent = 'DELETE';
         optionsElement.appendChild(deleteTaskButton);
-
-        createCountdown(countdownElement, task.time);
-
-        taskContainer.appendChild(taskElement);
-
         // DELETE Data
-        deleteTaskButton.addEventListener('click', () => {
+        deleteTaskButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
             deleteTask(task.id);
         })
+
+        // Container
+        taskContainer.appendChild(taskElement);
     }
 }
 
