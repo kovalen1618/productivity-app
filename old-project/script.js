@@ -1,100 +1,102 @@
-function createCountdown(countdownElement, startingMinutes) {
-    let time = startingMinutes * 60;
 
-    const interval = setInterval(updateCountdown, 1000);
+// CountdownTimer.js
+// function createCountdown(countdownElement, startingMinutes) {
+//     let time = startingMinutes * 60;
 
-    function updateCountdown() {
-        const hours = Math.floor(time / 3600);
-        let minutes = Math.floor((time % 3600) / 60);
-        let seconds = time % 60;
+//     const interval = setInterval(updateCountdown, 1000);
 
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+//     function updateCountdown() {
+//         const hours = Math.floor(time / 3600);
+//         let minutes = Math.floor((time % 3600) / 60);
+//         let seconds = time % 60;
 
-        countdownElement.innerHTML = `${hours}:${minutes}:${seconds}`;
-        time--;
+//         minutes = minutes < 10 ? '0' + minutes : minutes;
+//         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        // Placeholder to stop intervalf from running after it hits 0
-        if (time < 0) {
-            clearInterval(interval);
-            countdownElement.innerHTML = 'Expired'
-        }
-    }
-}
+//         countdownElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+//         time--;
 
-// Display all tasks from the json-server
-const taskContainer = document.querySelector('.task-container')
+//         // Placeholder to stop intervalf from running after it hits 0
+//         if (time < 0) {
+//             clearInterval(interval);
+//             countdownElement.innerHTML = 'Expired'
+//         }
+//     }
+// }
 
-// Function to retrieve all tasks from the server and display them in the task container
-async function displayTasks() {
-    // GET request
-    const response = await fetch('http://localhost:3000/tasks');
-    const tasks = await response.json();
+// // Display all tasks from the json-server
+// const taskContainer = document.querySelector('.task-container')
 
-    // Create new element for each task
-    for (const task of tasks) {
-        const taskElement = document.createElement('div');
-        taskElement.classList.add('task');
-        taskElement.setAttribute('data-id', task.id);
+// // Function to retrieve all tasks from the server and display them in the task container
+// async function displayTasks() {
+//     // GET request
+//     const response = await fetch('http://localhost:3000/tasks');
+//     const tasks = await response.json();
 
-        // Title
-        const titleElement = document.createElement('h3');
-        titleElement.classList.add('title');
-        titleElement.textContent = task.title;
-        taskElement.appendChild(titleElement);
+//     // Create new element for each task
+//     for (const task of tasks) {
+//         const taskElement = document.createElement('div');
+//         taskElement.classList.add('task');
+//         taskElement.setAttribute('data-id', task.id);
 
-        // Timer
-        const countdownElement = document.createElement('p');
-        countdownElement.classList.add('countdown');
-        taskElement.appendChild(countdownElement);
+//         // Title
+//         const titleElement = document.createElement('h3');
+//         titleElement.classList.add('title');
+//         titleElement.textContent = task.title;
+//         taskElement.appendChild(titleElement);
 
-        createCountdown(countdownElement, task.time);
+//         // Timer
+//         const countdownElement = document.createElement('p');
+//         countdownElement.classList.add('countdown');
+//         taskElement.appendChild(countdownElement);
 
-        // Options
-        const optionsElement = document.createElement('div');
-        optionsElement.classList.add('options');
-        taskElement.appendChild(optionsElement);
-        // Delete
-        const deleteTaskButton = document.createElement('button');
-        deleteTaskButton.classList.add('delete');
-        deleteTaskButton.textContent = 'DELETE';
-        optionsElement.appendChild(deleteTaskButton);
-        // DELETE Data
-        deleteTaskButton.addEventListener('click', (e) => {
-            e.preventDefault();
+//         createCountdown(countdownElement, task.time);
 
-            deleteTask(task.id);
-        })
+//         // Options
+//         const optionsElement = document.createElement('div');
+//         optionsElement.classList.add('options');
+//         taskElement.appendChild(optionsElement);
+//         // Delete
+//         const deleteTaskButton = document.createElement('button');
+//         deleteTaskButton.classList.add('delete');
+//         deleteTaskButton.textContent = 'DELETE';
+//         optionsElement.appendChild(deleteTaskButton);
+//         // DELETE Data
+//         deleteTaskButton.addEventListener('click', (e) => {
+//             e.preventDefault();
 
-        // Container
-        taskContainer.appendChild(taskElement);
-    }
-}
+//             deleteTask(task.id);
+//         })
 
-// Function for successfully sending DELETE request
-async function deleteTask(id) {
-    const response = await fetch(`http://localhost:3000/tasks/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-    })
+//         // Container
+//         taskContainer.appendChild(taskElement);
+//     }
+// }
 
-    if (response.ok) {
-        // If the request was successful, remove the task from the DOM
-        const taskElement = document.querySelector(`.task[data-id="${id}"]`);
-        taskElement.remove();
-    } else {
-        console.error('Error deleting task');
-    }
-}
+// // Function for successfully sending DELETE request
+// async function deleteTask(id) {
+//     const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+//         method: 'DELETE',
+//         headers: { 'Content-Type': 'application/json' },
+//     })
+
+//     if (response.ok) {
+//         // If the request was successful, remove the task from the DOM
+//         const taskElement = document.querySelector(`.task[data-id="${id}"]`);
+//         taskElement.remove();
+//     } else {
+//         console.error('Error deleting task');
+//     }
+// }
 
 
-// Requests
-// GET Data
-fetch('.././data/db.json')
-    .then(response => response.json())
-    .then(data => {
-        displayTasks();
-    })
+// // Requests
+// // GET Data
+// fetch('.././data/db.json')
+//     .then(response => response.json())
+//     .then(data => {
+//         displayTasks();
+//     })
 
 // POST Data
 const addTaskButton = document.querySelector('.add-task');
