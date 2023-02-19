@@ -3,13 +3,12 @@ import React, { useState } from 'react'
 export default function TaskForm() {
     // Empty initial states for user input
     const [title, setTitle] = useState('');
-    const [time, setTime] = useState();
+    const [time, setTime] = useState('');
 
-    const onAddTask = async () => {
-        const newTask = {
-            title: title,
-            time: time 
-        };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const newTask = { title, time };
 
         try {
             const response = await fetch('http://localhost:3000/tasks', {
@@ -20,23 +19,15 @@ export default function TaskForm() {
 
             if (!response.ok) {
                 throw new Error('Failed to add task');
-            } else {
-                handleSubmit(newTask);
             }
-            
+
+            // Reset the form input fields if the task was added successfully
+            setTitle('');
+            setTime('');
         } catch (error) {
             console.error(error);
         }
     }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        onAddTask({ title, time });
-        setTitle('');
-        setTime('');
-    }
-
 
     return (
         <form onSubmit={handleSubmit}>
@@ -55,7 +46,11 @@ export default function TaskForm() {
                     type="number"
                     id='time'
                     value={time}
-                    onChange={(event) => setTime(parseInt(event.target.value))}
+                    onChange={(event) => {
+                        const value = event.target.value;
+                        console.log(value)
+                        setTime(value !== '' ? parseInt(value, 10) : 0)}
+                    }
                 />
             </div>
             <button type='submit'>Add Task</button>

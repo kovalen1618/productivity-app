@@ -1,9 +1,14 @@
 {
   "tasks": [
     {
-      "title": "Work on website",
-      "time": 10,
+      "title": "Work on the website",
+      "time": 120,
       "id": 1
+    },
+    {
+      "title": "Work on the game",
+      "time": 30,
+      "id": 2
     }
   ]
 }
