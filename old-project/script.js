@@ -90,7 +90,7 @@ async function deleteTask(id) {
 
 // Requests
 // GET Data
-fetch('./data/db.json')
+fetch('.././data/db.json')
     .then(response => response.json())
     .then(data => {
         displayTasks();
