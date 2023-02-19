@@ -24,3 +24,27 @@ fetch('./data/db.json')
         }
     })
 
+
+
+
+const addTaskButton = document.querySelector('.add-task');
+
+addTaskButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+      // Define the data for the new task
+  const data = {
+    title: "New task",
+    time: 120
+  };
+
+  // Send a POST request to add the new task at the URL of the json-server
+  fetch('http://localhost:3000/tasks', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+})
