@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function TaskForm() {
+export default function TaskForm({ setTasks, socket }) {
     // Empty initial states for user input
     const [title, setTitle] = useState('');
     const [time, setTime] = useState('');
@@ -15,12 +15,12 @@ export default function TaskForm() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTask)
-            });
+            });          
+            
+            const data = await response.json();
+            setTasks((prevTasks) => [...prevTasks, data]);
 
-            if (!response.ok) {
-                throw new Error('Failed to add task');
-            }
-
+            socket.emit('taskAdded', data);
             // Reset the form input fields if the task was added successfully
             setTitle('');
             setTime('');

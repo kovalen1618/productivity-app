@@ -1,8 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import Task from './Task';
 
-export default function TaskList() {
-    const [tasks, setTasks] = useState([]);
+export default function TaskList({ tasks, setTasks, socket }) {
+    useEffect(() => {
+        socket.on('taskAdded', (task) => {
+        setTasks((prevTasks) => [...prevTasks, task])
+        })
+
+        return () => {
+        socket.off('taskAdded')
+        }
+    }, [socket, setTasks])
+
 
     useEffect(() => {
         async function fetchData() {
@@ -11,7 +20,7 @@ export default function TaskList() {
             setTasks(data);
         }
         fetchData();
-    }, []);
+    }, [setTasks]);
 
     async function deleteTask(id) {
         const response = await fetch (`http://localhost:3000/tasks/${id}`, {
