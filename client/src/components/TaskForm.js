@@ -48,7 +48,6 @@ export default function TaskForm({ setTasks, socket }) {
                     value={time}
                     onChange={(event) => {
                         const value = event.target.value;
-                        console.log(value)
                         setTime(value !== '' ? parseInt(value, 10) : 0)}
                     }
                 />
