@@ -11,7 +11,7 @@ export default function TaskForm({ setTasks, socket }) {
         const newTask = { title, time };
 
         try {
-            const response = await fetch('http://localhost:3000/tasks', {
+            const response = await fetch('/api/tasks', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTask)

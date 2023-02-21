@@ -13,7 +13,7 @@ export default function TaskList({ tasks, setTasks, socket }) {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch('http://localhost:3000/tasks')
+            const response = await fetch('/api/tasks')
             const data = await response.json();
             setTasks(data);
         }
@@ -21,7 +21,7 @@ export default function TaskList({ tasks, setTasks, socket }) {
     }, [setTasks]);
 
     async function deleteTask(id) {
-        const response = await fetch (`http://localhost:3000/tasks/${id}`, {
+        const response = await fetch (`/api/tasks/${id}`, {
             method: 'DELETE',
         });
 
