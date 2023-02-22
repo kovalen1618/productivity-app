@@ -6,14 +6,6 @@ export default forwardRef(function CountdownTimer({ startingMinutes, onTimerComp
     const intervalRef = useRef();
 
     useEffect(() => {
-        intervalRef.current = setInterval(() => {
-            setTime((prevTime) => prevTime - 1);
-        }, 1000);
-
-        return () => clearInterval(intervalRef.current);
-    }, []);
-
-    useEffect(() => {
         if (time === 0) {
             clearInterval(intervalRef.current);
             onTimerComplete();
