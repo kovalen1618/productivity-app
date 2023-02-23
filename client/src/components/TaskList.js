@@ -31,13 +31,10 @@ export default function TaskList({ tasks, setTasks, socket }) {
     } 
 
     async function handleDelete(id) {
-        // const updatedTasks = tasks.filter((task) => task.id !== id);
-        // setTasks(updatedTasks);
-        // deleteTask(id);
-
         try {
             await deleteTask(id);
             setTasks((tasks) => tasks.filter((task) => task.id !== id));
+            localStorage.removeItem(`remainingTime-${id}`);
         } catch (error) {
             console.error(error);
         }

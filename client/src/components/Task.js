@@ -15,6 +15,15 @@ export default function Task({ task, onDelete }) {
     setIsRunning(!isRunning);
   }
 
+  function resetTimer() {
+    if (isRunning) {
+      countdownRef.current.pause();
+      setIsRunning(false);
+    }
+
+    countdownRef.current.reset();
+  }
+
 
   return (
     <div className='task' data-id={task.id}>
@@ -22,10 +31,12 @@ export default function Task({ task, onDelete }) {
         <button className="play-pause" onClick={handlePlayPause}>
           {isRunning ? 'PAUSE' : 'PLAY'}
         </button>
+        <button className="reset-button" onClick={resetTimer}>Reset</button>
         <CountdownTimer 
           ref={countdownRef}
           startingMinutes={task.time}
           onTimerComplete={() => setIsRunning(false)} 
+          id={task.id}
         />
         <div className="options">
             <button className="delete" onClick={(() => onDelete(task.id))}>
