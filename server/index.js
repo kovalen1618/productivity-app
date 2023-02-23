@@ -23,15 +23,6 @@ const io = new Server(server, {
     }
 })
 
-// // Simple API route that returns JSON data
-// app.get('/api/data', (req, res) => {
-//   const data = {
-//     message: 'Hello, world!',
-//     timestamp: new Date()
-//   };
-//   res.json(data);
-// });
-
 // To run server, type in CMD: npm start
 // This is possible due to the "start" script within package.json
 server.listen(3001, () => {

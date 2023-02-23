@@ -1,16 +1,46 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 
-export default function CountdownTimer({ startingMinutes }) {
+export default forwardRef(function CountdownTimer({ startingMinutes, onTimerComplete, id }, ref ) {
+    // Generating a unique key for the localStorage value based on the task id
+    const localStorageKey = `remainingTime-${id}`;
+
     // Creating initial state with 60 seconds to work from
-    const [time, setTime] = useState(startingMinutes * 60);
+    const [time, setTime] = useState(() => {
+        const storedTime = localStorage.getItem(localStorageKey);
+        // const time = new Date(storedTime).getTime();
+        return storedTime !== null ? parseInt(storedTime) : startingMinutes * 60;
+    });
+    const intervalRef = useRef();
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setTime((prevTime) => prevTime - 1);
-        }, 1000);
+        if (time === 0) {
+            clearInterval(intervalRef.current);
+            onTimerComplete();
+        }
+    }, [time, onTimerComplete])
 
-        return () => clearInterval(interval);
-    }, []);
+    useImperativeHandle(ref, () => ({
+        play: () => {
+            clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(() => {
+                setTime((prevTime) => prevTime - 1);
+            }, 1000);
+        },
+        pause: () => clearInterval(intervalRef.current),
+        reset: () => setTime(startingMinutes * 60)
+    }));
+
+    // Local storage
+    useEffect(() => {
+        localStorage.setItem(localStorageKey, time);
+    }, [time, localStorageKey])
+
+    useEffect(() => {
+        const storedTime = localStorage.getItem(localStorageKey);
+        if (storedTime) {
+            setTime(parseInt(storedTime));
+        }
+    }, [localStorageKey])
 
     const hours = Math.floor(time / 3600);
     let minutes = Math.floor((time % 3600) / 60);
@@ -23,4 +53,4 @@ export default function CountdownTimer({ startingMinutes }) {
   
     // Return component to App.js
     return <div>{countdown}</div>
-}
+})
