@@ -15,7 +15,7 @@ export default function TaskForm({ setTasks, socket }) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newTask)
-            });          
+            });
             
             const data = await response.json();
             setTasks((prevTasks) => [...prevTasks, data]);

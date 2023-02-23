@@ -27,7 +27,6 @@ function App() {
       setTasks((prevTasks) => [...prevTasks, task]);
     })
 
-    
     socket.on('taskDeleted', (taskId) => {
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     })
